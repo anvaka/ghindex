@@ -15,9 +15,13 @@ if (tokens.enabled > 0) {
 
 function findRepositories(minStars) {
   // github client can only process 1000 records. Split that into pages:
-  return githubClient.findRepo('stars:<' + minStars)
-     .then(pause(5000))
-     .then(processNextPage);
+  if (minStars) {
+    return githubClient.findRepo('stars:<' + minStars)
+       .then(pause(5000))
+       .then(processNextPage);
+  } else {
+    throw new Error('Min stars is required');
+  }
 
   function processNextPage(repositories) {
     var minWatchers;
@@ -29,7 +33,7 @@ function findRepositories(minStars) {
       }
     }
 
-    return findRepositories(minWatchers);
+    if (minWatchers)  return findRepositories(minWatchers);
   }
 }
 
