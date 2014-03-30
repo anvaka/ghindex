@@ -33,7 +33,7 @@ function findRepositories(minStars) {
       }
     }
 
-    if (minWatchers)  return findRepositories(minWatchers);
+    if (minWatchers && minWatchers >= 200) return findRepositories(minWatchers);
   }
 }
 
