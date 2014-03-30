@@ -13,10 +13,11 @@ if (tokens.enabled > 0) {
   printTokenHelp();
 }
 
+var seen = {};
 function findRepositories(minStars) {
   // github client can only process 1000 records. Split that into pages:
   if (minStars) {
-    return githubClient.findRepo('stars:<' + minStars)
+    return githubClient.findRepo('stars:<' + (minStars + 1))
        .then(pause(5000))
        .then(processNextPage);
   } else {
@@ -29,11 +30,15 @@ function findRepositories(minStars) {
       var repo = repositories[i];
       minWatchers = repo.watchers;
       if (minWatchers >= 200) {
-        outStream.write(repo);
+        if (!seen[repo.name]) {
+          outStream.write(repo);
+          seen[repo.name] = true;
+        }
       }
     }
 
     if (minWatchers && minWatchers >= 200) return findRepositories(minWatchers);
+    outStream.end();
   }
 }
 
