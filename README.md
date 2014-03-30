@@ -1,14 +1,7 @@
 # ghindex
 
-Creates github index for similar repositories discovery
+Creates github index for similar repositories discovery. WIP
 
-# install
-
-With [npm](https://npmjs.org) do:
-
-```
-npm install ghindex
-```
 
 # license
 
