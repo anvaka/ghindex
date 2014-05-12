@@ -5,6 +5,7 @@ Creates github index for similar repositories discovery. WIP
 # Usage
 
 To index repositories:
+
 ```
 node repoIndexer.js --tokens="COMMA_SEPARATED_LIST_OF_GITHUB_TOKENS"
 ```
