@@ -16,9 +16,10 @@
     "url": "https://github.com/anvaka/ghindex"
   },
   "dependencies": {
-    "q": "^1.0.1",
+    "JSONStream": "^0.8.0",
+    "level": "^0.18.0",
     "optimist": "^0.6.1",
-    "request": "^2.34.0",
-    "JSONStream": "^0.8.0"
+    "q": "^1.0.1",
+    "request": "^2.34.0"
   }
 }
