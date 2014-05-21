@@ -24,7 +24,9 @@ ENABLE_LOG=1 node repoIndexer.js --tokens=...
 After you've indexed repositories you can save them into a database. I'm using
 leveldb as example, but any database would work.
 
+```
 node savetodb ./allrepo.json ./db/repositories
+```
 
 This will save repositories into folder /db, into `repositories` database
 
