@@ -1,3 +1,7 @@
+/**
+ * This file indexes all popular repositories on github which has more than 200 
+ * stars
+ */
 var Q = require('q');
 var tokens = require('./lib/tokens')();
 var JSONStream = require('JSONStream');
