@@ -21,9 +21,11 @@ if (!inputArgumentsValid) {
   return -2;
 }
 
-var indexedRepositories = getIndexedRepositories(repositoriesFileName);
-var indexedFollowersFileName = getIndexedFollowersFileName(process.argv[3], repositoriesFileName);
-var indexedFollowers = getIndexedFollowers(indexedFollowersFileName);
+var allRepositories = getIndexedRepositories(repositoriesFileName);
+var processedRepositoriesFileName = getProcessedRepositoriesFileName(process.argv[3], repositoriesFileName);
+var processedRepositories = getProcessedRepositories(processedRepositoriesFileName);
+var remainingRepositories = getRemainingRepositories(allRepositories, processedRepositories);
+printStats(allRepositories, processedRepositories, remainingRepositories);
 
 function printTokenHelp() {
   [
@@ -45,6 +47,13 @@ function printInputArgumentsHelp() {
   ].forEach(function (line) { console.log(line); });
 }
 
+function printStats(allRepositories, processedRepositories, remainingRepositories) {
+  console.log('Statistics:');
+  console.log('  Total:', allRepositories.length);
+  console.log('  Processed:', processedRepositories.length);
+  console.log('  Remaining:', remainingRepositories.length);
+}
+
 function readJson(fileName) {
   return JSON.parse(fs.readFileSync(fileName, 'utf8'));
 }
@@ -56,7 +65,7 @@ function getIndexedRepositories(repositoriesFileName) {
   return repositories;
 }
 
-function getIndexedFollowers(followersFileName) {
+function getProcessedRepositories(followersFileName) {
   console.log('Reading followers file', followersFileName);
   var records = [];
   try {
@@ -70,12 +79,25 @@ function getIndexedFollowers(followersFileName) {
   return records;
 }
 
-function getIndexedFollowersFileName(followersFileName, repositoriesFileName) {
+function getRemainingRepositories(allRepositories, indexedRepositories) {
+  // simple merge of two arrays. It definitely could be optmized, if it's proven
+  // to be required.
+  var processedKeys = {};
+
+  indexedRepositories.forEach(function (record) {
+    processedKeys[record.name] = 1;
+  });
+
+  return allRepositories.filter(function (x) { return !processedKeys[x.name]; });
+}
+
+function getProcessedRepositoriesFileName(followersFileName, repositoriesFileName) {
   if (fs.existsSync(followersFileName)) {
+    console.log('Indexed followers file:', followersFileName);
     return followersFileName;
   }
 
-  console.log('Indexed followers file is not fond. Creating a new one');
+  console.log('Indexed followers file is not fond.');
   var path = require('path');
   var absoluteRepositoriesFileName = path.resolve(repositoriesFileName);
   var repoPath = path.dirname(absoluteRepositoriesFileName);
