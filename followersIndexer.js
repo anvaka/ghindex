@@ -22,7 +22,8 @@ if (!inputArgumentsValid) {
 }
 
 var indexedRepositories = getIndexedRepositories(repositoriesFileName);
-var indexedFollowers = getIndexedFollowersFileName(process.argv[3], repositoriesFileName);
+var indexedFollowersFileName = getIndexedFollowersFileName(process.argv[3], repositoriesFileName);
+var indexedFollowers = getIndexedFollowers(indexedFollowersFileName);
 
 function printTokenHelp() {
   [
@@ -53,6 +54,20 @@ function getIndexedRepositories(repositoriesFileName) {
   var repositories = readJson(repositoriesFileName);
   console.log('Read', repositories.length, 'repositories');
   return repositories;
+}
+
+function getIndexedFollowers(followersFileName) {
+  console.log('Reading followers file', followersFileName);
+  var records = [];
+  try {
+    records = readJson(followersFileName);
+    console.log('Read', records.length, 'processed repositories');
+  }
+  catch (e) {
+    console.log('Could not read followers file. Assuming nothing indexed...');
+  }
+
+  return records;
 }
 
 function getIndexedFollowersFileName(followersFileName, repositoriesFileName) {
