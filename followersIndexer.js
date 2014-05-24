@@ -27,6 +27,9 @@ var processedRepositories = getProcessedRepositories(processedRepositoriesFileNa
 var remainingRepositories = getRemainingRepositories(allRepositories, processedRepositories);
 printStats(allRepositories, processedRepositories, remainingRepositories);
 
+var indexFollowers = require('./lib/indexFollowers');
+indexFollowers(remainingRepositories, processedRepositoriesFileName);
+
 function printTokenHelp() {
   [
     'Github access token is not present in environment variables',
