@@ -29,7 +29,7 @@ var remainingRepositories = getRemainingRepositories(allRepositories, processedR
 printStats(allRepositories, processedRepositories, remainingRepositories);
 
 var indexFollowers = require('./lib/indexFollowers');
-indexFollowers(remainingRepositories, processedRepositoriesFileName, githubClient);
+indexFollowers(remainingRepositories, processedRepositoriesFileName, githubClient, processedRepositories);
 
 function printTokenHelp() {
   [
@@ -74,7 +74,7 @@ function getProcessedRepositories(followersFileName) {
   var records = [];
   try {
     records = readJson(followersFileName);
-    console.log('Read', records.length, 'processed repositories');
+    console.log('Read', Object.keys(records).length, 'processed repositories');
   }
   catch (e) {
     console.log('Could not read followers file. Assuming nothing indexed...');
@@ -84,15 +84,7 @@ function getProcessedRepositories(followersFileName) {
 }
 
 function getRemainingRepositories(allRepositories, indexedRepositories) {
-  // simple merge of two arrays. It definitely could be optmized, if it's proven
-  // to be required.
-  var processedKeys = {};
-
-  indexedRepositories.forEach(function (record) {
-    processedKeys[record.name] = 1;
-  });
-
-  return allRepositories.filter(function (x) { return !processedKeys[x.name]; });
+  return allRepositories.filter(function (x) { return !indexedRepositories[x.name]; });
 }
 
 function getProcessedRepositoriesFileName(followersFileName, repositoriesFileName) {
