@@ -13,6 +13,7 @@ if (tokens.enabled === 0) {
   return -1;
 }
 
+var githubClient = require('./lib/ghclient')(tokens);
 var repositoriesFileName = process.argv[2];
 var inputArgumentsValid = fs.existsSync(repositoriesFileName);
 
@@ -28,7 +29,7 @@ var remainingRepositories = getRemainingRepositories(allRepositories, processedR
 printStats(allRepositories, processedRepositories, remainingRepositories);
 
 var indexFollowers = require('./lib/indexFollowers');
-indexFollowers(remainingRepositories, processedRepositoriesFileName);
+indexFollowers(remainingRepositories, processedRepositoriesFileName, githubClient);
 
 function printTokenHelp() {
   [
