@@ -54,7 +54,7 @@ function printInputArgumentsHelp() {
 function printStats(allRepositories, processedRepositories, remainingRepositories) {
   console.log('Statistics:');
   console.log('  Total:', allRepositories.length);
-  console.log('  Processed:', processedRepositories.length);
+  console.log('  Processed:', Object.keys(processedRepositories).length);
   console.log('  Remaining:', remainingRepositories.length);
 }
 
