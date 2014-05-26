@@ -13,27 +13,28 @@ saveOutput(readInput(inputFile), dbFileName);
 
 function readInput(inputFile) {
   var allRepo = require(inputFile);
-  console.log('Read ' + allRepo.length + ' repositories;');
+  console.log('Read ' + Object.keys(allRepo).length + ' repositories;');
   return allRepo;
 }
 
-function saveOutput(array, dbFileName) {
+function saveOutput(repositories, dbFileName) {
   var level = require('level');
   var db = level(dbFileName, {valueEncoding: 'json'});
+  var repoNames = Object.keys(repositories);
 
-  var writeOps = array.map(function (x) {
-    return { type: 'put', key: x.name, value: x };
+  var writeOps = repoNames.map(function (name) {
+    return { type: 'put', key: name, value: repositories[name] };
   });
 
   db.batch(writeOps, function (err) {
-    if (err) throw new Error('Failed to save ' + array.length + ' records for ' + dbFileName + '. Error: ' + err);
-    console.log('Saved records to database: ', array.length);
+    if (err) throw new Error('Failed to save ' + repoNames.length + ' records for ' + dbFileName + '. Error: ' + err);
+    console.log('Saved records to database: ', repoNames.length);
   });
 }
 
 function printUsage() {
-  console.log('Save json file of popular repositories into a leveldb database');
-  console.log('  node savetodb ./allrepo.json ./db/repositories');
+  console.log('Save json file of followers into a leveldb database');
+  console.log('  node savetodb ./allRepoFollowers.json ./db/followers');
 }
 
 function handleError(err) {
