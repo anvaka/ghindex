@@ -1,3 +1,5 @@
+/* Saves repository followers into a file */
+
 var inputFile = process.argv[2];
 if (!inputFile) {
   printUsage();
