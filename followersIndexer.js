@@ -29,7 +29,8 @@ var remainingRepositories = getRemainingRepositories(allRepositories, processedR
 printStats(allRepositories, processedRepositories, remainingRepositories);
 
 var indexFollowers = require('./lib/indexFollowers');
-indexFollowers(remainingRepositories, processedRepositoriesFileName, githubClient, processedRepositories);
+var db = require('./lib/fsdb')(processedRepositoriesFileName);
+indexFollowers(remainingRepositories, db, githubClient, processedRepositories);
 
 function printTokenHelp() {
   [

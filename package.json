@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "JSONStream": "^0.8.0",
+    "bluebird": "^1.2.4",
     "level": "^0.18.0",
     "optimist": "^0.6.1",
     "q": "^1.0.1",
