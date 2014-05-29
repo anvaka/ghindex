@@ -24,13 +24,14 @@ if (!inputArgumentsValid) {
 
 var allRepositories = getIndexedRepositories(repositoriesFileName);
 var processedRepositoriesFileName = getProcessedRepositoriesFileName(process.argv[3], repositoriesFileName);
-var processedRepositories = getProcessedRepositories(processedRepositoriesFileName);
+var db = require('./lib/fsdb')(processedRepositoriesFileName);
+
+var processedRepositories = db.getAll(); // todo: remove this.
 var remainingRepositories = getRemainingRepositories(allRepositories, processedRepositories);
 printStats(allRepositories, processedRepositories, remainingRepositories);
 
 var indexFollowers = require('./lib/indexFollowers');
-var db = require('./lib/fsdb')(processedRepositoriesFileName);
-indexFollowers(remainingRepositories, db, githubClient, processedRepositories);
+indexFollowers(remainingRepositories, db, githubClient);
 
 function printTokenHelp() {
   [
@@ -68,20 +69,6 @@ function getIndexedRepositories(repositoriesFileName) {
   var repositories = readJson(repositoriesFileName);
   console.log('Read', repositories.length, 'repositories');
   return repositories;
-}
-
-function getProcessedRepositories(followersFileName) {
-  console.log('Reading followers file', followersFileName);
-  var records = [];
-  try {
-    records = readJson(followersFileName);
-    console.log('Read', Object.keys(records).length, 'processed repositories');
-  }
-  catch (e) {
-    console.log('Could not read followers file. Assuming nothing indexed...');
-  }
-
-  return records;
 }
 
 function getRemainingRepositories(allRepositories, indexedRepositories) {
