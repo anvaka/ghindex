@@ -23,15 +23,20 @@ if (!inputArgumentsValid) {
 }
 
 var allRepositories = getIndexedRepositories(repositoriesFileName);
-var processedRepositoriesFileName = getProcessedRepositoriesFileName(process.argv[3], repositoriesFileName);
-var db = require('./lib/fsdb')(processedRepositoriesFileName);
+var processedRepositoriesName = getProcessedRepositoriesFileName(process.argv[3], repositoriesFileName);
+var db = require('./lib/ldb')(processedRepositoriesName);
 
-var processedRepositories = db.getAll(); // todo: remove this.
-var remainingRepositories = getRemainingRepositories(allRepositories, processedRepositories);
-printStats(allRepositories, processedRepositories, remainingRepositories);
+db.getAllKeys()
+  .then(function (processedRepositoriesKeys) {
+    var processedRepositories = {};
+    processedRepositoriesKeys.forEach(function (key) { processedRepositories[key] = 1; });
 
-var indexFollowers = require('./lib/indexFollowers');
-indexFollowers(remainingRepositories, db, githubClient);
+    var remainingRepositories = getRemainingRepositories(allRepositories, processedRepositories);
+    printStats(allRepositories, processedRepositories, remainingRepositories);
+
+    var indexFollowers = require('./lib/indexFollowers');
+    indexFollowers(remainingRepositories, db, githubClient);
+  });
 
 function printTokenHelp() {
   [
@@ -77,19 +82,15 @@ function getRemainingRepositories(allRepositories, indexedRepositories) {
 
 function getProcessedRepositoriesFileName(followersFileName, repositoriesFileName) {
   if (fs.existsSync(followersFileName)) {
-    console.log('Indexed followers file:', followersFileName);
+    console.log('Indexed followers:', followersFileName);
     return followersFileName;
   }
 
-  console.log('Indexed followers file is not fond.');
+  console.log('Indexed followers database is not found.');
   var path = require('path');
   var absoluteRepositoriesFileName = path.resolve(repositoriesFileName);
   var repoPath = path.dirname(absoluteRepositoriesFileName);
-  followersFileName = path.join(repoPath, path.basename(absoluteRepositoriesFileName, '.json') + 'Followers.json');
-  console.log('Trying to use', followersFileName, 'as indexed followers file.');
-  if (fs.existsSync(followersFileName)) {
-    console.error('Indexed followers file already exists. Did you forget to pass it as third argument?');
-    console.error('  node followersIndexer repositories.json followers.json');
-  }
+  followersFileName = path.join(repoPath, path.basename(absoluteRepositoriesFileName, '.json') + 'Followers');
+  console.log('Trying to use', followersFileName, 'as indexed followers db.');
   return followersFileName;
 }
