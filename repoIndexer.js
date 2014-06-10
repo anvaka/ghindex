@@ -20,7 +20,7 @@ function findRepositories(minStars) {
   // github client can only process 1000 records. Split that into pages:
   if (minStars) {
     return githubClient.findRepositories('stars:<' + (minStars + 1))
-       .delay(5000)
+       .delay(1000)
        .then(processNextPage)
        .catch(function(err) {
          console.log('Unhandled exception: ', err);
