@@ -21,7 +21,10 @@ function findRepositories(minStars) {
   if (minStars) {
     return githubClient.findRepositories('stars:<' + (minStars + 1))
        .delay(5000)
-       .then(processNextPage);
+       .then(processNextPage)
+       .catch(function(err) {
+         console.log('Unhandled exception: ', err);
+       });
   } else {
     throw new Error('Min stars is required');
   }
