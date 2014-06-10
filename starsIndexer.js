@@ -21,11 +21,13 @@ if (tokens.enabled === 0) {
   return -1;
 }
 
+var githubClient = require('./lib/ghclient')(tokens);
+
 console.log('Loading databases...');
 var followersDB = loadDB(process.argv[2], true);
 var starsDB = loadDB(process.argv[3]);
 
-Promise.all([followersDB.getAllKeys(), starsDB.getAllKeys()])
+Promise.all([getUniqueFollowers(followersDB), starsDB.getAllKeys()])
   .spread(getRemainingFollowers)
   .then(getStarsForRemainingFollowers);
 
@@ -43,7 +45,9 @@ function getRemainingFollowers(allFollowers, indexedFollowers) {
   return remaining;
 }
 
-function getStarsForRemainingFollowers(remainigFollowers) {
+function getStarsForRemainingFollowers(remainingFollowers) {
+  var indexStars = require('./lib/indexStars');
+  indexStars(remainingFollowers, starsDB, githubClient);
 }
 
 function printGenericHelp() {
@@ -64,4 +68,19 @@ function loadDB(name, required) {
   if (required && !fs.existsSync(name)) throw new Error('Cannot load required database ' + name);
 
   return require('./lib/ldb')(name);
+}
+
+function getUniqueFollowers(followersDB) {
+  var uniqueFollowers = {};
+
+  return followersDB.forEach(recordProjectFollowers)
+      .then(function () { return Object.keys(uniqueFollowers); });
+
+  function recordProjectFollowers(projectName, followers) {
+    followers.forEach(addFollower);
+  }
+
+  function addFollower(name) {
+    uniqueFollowers[name] = 1;
+  }
 }
