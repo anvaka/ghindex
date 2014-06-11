@@ -26,7 +26,7 @@ if (!inputArgumentsValid) {
 }
 
 var allRepositories = getIndexedRepositories(repositoriesFileName);
-var processedRepositoriesName = getProcessedRepositoriesFileName(process.argv[3], repositoriesFileName);
+var processedRepositoriesName = process.argv[3];
 var db = require('./lib/ldb')(processedRepositoriesName);
 
 db.getAllKeys()
@@ -81,19 +81,4 @@ function getIndexedRepositories(repositoriesFileName) {
 
 function getRemainingRepositories(allRepositories, indexedRepositories) {
   return allRepositories.filter(function (x) { return !indexedRepositories[x.name]; });
-}
-
-function getProcessedRepositoriesFileName(followersFileName, repositoriesFileName) {
-  if (fs.existsSync(followersFileName)) {
-    console.log('Indexed followers:', followersFileName);
-    return followersFileName;
-  }
-
-  console.log('Indexed followers database is not found.');
-  var path = require('path');
-  var absoluteRepositoriesFileName = path.resolve(repositoriesFileName);
-  var repoPath = path.dirname(absoluteRepositoriesFileName);
-  followersFileName = path.join(repoPath, path.basename(absoluteRepositoriesFileName, '.json') + 'Followers');
-  console.log('Trying to use', followersFileName, 'as indexed followers db.');
-  return followersFileName;
 }
