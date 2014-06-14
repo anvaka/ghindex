@@ -1,9 +1,7 @@
 # ghindex
 
-Creates github index for similar repositories discovery. You can see working
+Creates GitHub index for similar repositories discovery. You can see working
 website here: [Gazing Stargazers](http://www.yasiv.com/github/)
-
-WIP.
 
 # Usage
 
@@ -47,7 +45,7 @@ node starsIndexer.js ./db/followers ./db/stars  --tokens="COMMA_SEPARATED_LIST_O
 
 This will read all unique followers from the followers database `./db/followers`,
 constructed in step 2, and will output results into database called `./db/stars`.
-Each reacord in `./db/stars` will have user name as a key, and starred repositories
+Each record in `./db/stars` will have user name as a key, and starred repositories
 as a value.
 
 This is the most time consuming step. As of Jun, 2014 GitHub had 13,000+ repositories
