@@ -3,19 +3,15 @@
  * attemtps to find related proejcts. This program saves results into `out` folder
  *
  * Usage:
- *   node --max-old-space-size=8192 constructRecommendations.js ./db/followers ./db/stars
+ *   node  constructRecommendations.js ./db/followers ./db/stars
  *
  * Where:
  *   - followers: leveldb database name with indexed followers (produced by followersIndexer)
  *   - stars: leveldb database name with indexed stars (produced by starsIndexer)
- *
- * Note: we are using large heap size for node, since we load full databases in memory.
- * You don't have to do this, but processing will be extremely slow otherwise.
- *
- * Information about 671,072 followers requires ~6GB of RAM.
  */
 var fs = require('fs');
 var saveRecommendation = require('./lib/saveRecommendation');
+var findRelated = require('./lib/findRelated');
 
 if (!checkInput()) {
   printHelp();
@@ -27,19 +23,23 @@ fs.mkdirSync('./projects');
 
 // we will iterate over each project:
 var projectsDB = openDB(process.argv[2]);
+var starsDB = openDB(process.argv[3]);
+processProjects();
 
-// and we will need all followers:
-loadFullDBInMemory(process.argv[3]).then(processProjects);
-
-function processProjects(usersDB) {
+function processProjects() {
   var projects = [];
-  projectsDB.forEach(constructRecommendations).then(writeProjectsFile);
+  projectsDB.forEach(constructRecommendations)
+    .then(writeProjectsFile);
 
   function constructRecommendations(projectName, followers) {
     console.log('Processing', projectName);
-    var related = require('./lib/findRelated')(followers, usersDB);
-    saveRecommendation(projectName, related);
-    projects.push(projectName);
+    starsDB.getAllKeyValues(followers)
+      .then(function (usersDB) {
+        console.log('Loaded projects starred by followers of ' + projectName);
+        var related = findRelated(followers, usersDB);
+        saveRecommendation(projectName, related);
+        projects.push(projectName);
+      });
   }
 
   function writeProjectsFile() {
@@ -103,15 +103,10 @@ function printHelp() {
 'attemtps to find related proejcts. This program saves results into `out` folder',
 '',
 'Usage:',
-'  node --max-old-space-size=8192 constructRecommendations.js ./db/followers ./db/stars',
+'  node constructRecommendations.js ./db/followers ./db/stars',
 '',
 'Where:',
 '  - followers: leveldb database name with indexed followers (produced by followersIndexer)',
-'  - stars: leveldb database name with indexed stars (produced by starsIndexer)',
-'',
-'Note: we are using large heap size for node, since we load full databases in memory.',
-'You don\'t have to do this, but processing will be extremely slow otherwise.',
-'',
-'Information about 671,072 followers requires ~6GB of RAM.']
+'  - stars: leveldb database name with indexed stars (produced by starsIndexer)']
 .forEach(function (line) { console.log(line); });
 }
