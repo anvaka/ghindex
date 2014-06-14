@@ -8,6 +8,8 @@ lib-cov
 *.gz
 
 db
+out
+projects
 pids
 logs
 results
