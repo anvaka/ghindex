@@ -49,12 +49,21 @@ as a value.
 
 This is the most time consuming step. As of Jun, 2014 GitHub had 13,000+ repositories
 with more than 200 stars. This translates to 600,000+ unique users, who gave stars
-to popular repositories. Even though majority of users gave less than 100 stars
-to different projects, we still need to make at least one request to fetch stars. I.e.
-we need to make more than 600,000 requests to GitHub.
+to popular repositories.
+
+Even though majority of users gave less than 100 stars to different projects, we
+still need to make at least one request to fetch stars. I.e. we need to make more
+than 600,000 requests to GitHub.
 
 GitHub's current rate limit is 5,000 per hour, thus if we are indexing with one
-token: 600,000/5,000 = 120 hours of work.
+token: `600,000/5,000 = 120` hours of work.
+
+Good news, this indexer can be interrupted, and resumed at any time.
+
+## 4. TODO: Constructing Recommendations
+
+Now that we have all popular repositories with stargazers, let's construct 
+recommendations database.
 
 # license
 
