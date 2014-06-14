@@ -13,6 +13,7 @@ var fs = require('fs');
 var saveRecommendation = require('./lib/saveRecommendation');
 var findRelated = require('./lib/findRelated');
 
+/*
 if (!checkInput()) {
   printHelp();
   return -1;
@@ -20,7 +21,7 @@ if (!checkInput()) {
 
 fs.mkdirSync('./out');
 fs.mkdirSync('./projects');
-
+*/
 // we will iterate over each project:
 var projectsDB = openDB(process.argv[2]);
 var starsDB = openDB(process.argv[3]);
@@ -28,8 +29,27 @@ processProjects();
 
 function processProjects() {
   var projects = [];
+//  var projectName = 'angular/angular.js';
+  var projectName = 'anvaka/ngraph';
+  //projectName = 'lodash/lodash';
+  projectsDB.getAllKeyValues([projectName])
+    .then(function (p) {
+var followers = p[projectName];
+    starsDB.getAllKeyValues(followers)
+      .then(function (usersDB) {
+        console.log('Loaded projects starred by followers of ' + projectName);
+        var related = findRelated(followers, usersDB);
+        /*
+        saveRecommendation(projectName, related);
+        projects.push(projectName);
+        */
+       console.log(related.slice(0, 10));
+      });
+    });
+  /*
   projectsDB.forEach(constructRecommendations)
     .then(writeProjectsFile);
+    */
 
   function constructRecommendations(projectName, followers) {
     console.log('Processing', projectName);
