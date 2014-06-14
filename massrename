@@ -1,0 +1,9 @@
+#!/bin/zsh
+# This script compresses all json files with recommendations and renames them
+# from *.json.gz to *.json. This gives opportunity to serve them gzipped from S3
+cd ./out
+find . -type f -name "*.json" -exec gzip -9 {} \;
+for f in **/*.json.gz; do
+  mv $f "$(dirname "$f")/$(basename "$f" .json.gz).json"
+done
+cd ../projects && gzip -9 ./projects.json && mv ./projects.json.gz ./projects.json;
