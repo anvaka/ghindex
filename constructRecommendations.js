@@ -3,7 +3,7 @@
  * attemtps to find related proejcts. This program saves results into `out` folder
  *
  * Usage:
- *   node  constructRecommendations.js ./db/followers ./db/stars
+ *   node constructRecommendations.js ./db/followers ./db/stars
  *
  * Where:
  *   - followers: leveldb database name with indexed followers (produced by followersIndexer)

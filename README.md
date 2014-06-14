@@ -63,10 +63,25 @@ with one token: `600,000/5,000 = 120` hours of work.
 
 Good news, this indexer can be interrupted, and resumed at any time.
 
-## 4. TODO: Constructing Recommendations
+## 4. Constructing Recommendations
 
 Now that we have all popular repositories with stargazers, let's construct 
 recommendations database.
+
+```
+node constructRecommendations.js ./db/followers ./db/stars
+```
+
+This will read followers database produced in step 2, and stars database produced
+in step 3. Results will be stored into two folders:
+
+`out` - will contain `username/repoName.json` files for each repository with more than 200 stars
+`projects` - will contain only `projects.json`. This file is array of all indexed repositories.
+
+# That's it.
+
+Normally this will be enough. I'm also uploading results into s3 bucket. This bucket
+then used by yasiv frontend: http://www.yasiv.com/github/
 
 # license
 
