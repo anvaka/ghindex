@@ -83,6 +83,21 @@ in step 3. Results will be stored into two folders:
 Normally this will be enough. I'm also uploading results into s3 bucket. This bucket
 then used by yasiv frontend: http://www.yasiv.com/github/
 
+# Help
+
+If I can summarize this entire project in one line of code, [here it is](https://github.com/anvaka/ghindex/blob/03eba6e4b0f317f99f3b997fec62bf9f9b87e956/lib/findRelated.js#L31):
+
+``` js
+var index = 100 * 2 * sharedStarsCount/(analyzeRatio * (theirStarsCount + ourStarsCount));
+```
+
+This is variation of [Sørensen–Dice coefficient](http://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient).
+While it gives pretty decent starting point for projects discovery on GitHub,
+it is not perfect. If you want to help me improve recommendations please feel free
+to reach out to me: Open PR/[tweet](https://twitter.com/anvaka) to me/[email](mailto:anvaka@gmail.com) me.
+
+PS: If you are working for GitHub, can you please make this feature part of GitHub?
+
 # license
 
 MIT
