@@ -44,6 +44,8 @@ node starsIndexer.js ./db/followers ./db/stars  --tokens="COMMA_SEPARATED_LIST_O
 
 This will read all unique followers from the followers database `./db/followers`,
 constructed in step 2, and will output results into database called `./db/stars`.
+Each reacord in `./db/stars` will have user name as a key, and starred repositories
+as a value.
 
 This is the most time consuming step. As of Jun, 2014 GitHub had 13,000+ repositories
 with more than 200 stars. This translates to 600,000+ unique users, who gave stars
