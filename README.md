@@ -58,8 +58,8 @@ Even though majority of users gave less than 100 stars to different projects, we
 still need to make at least one request to fetch stars. I.e. we need to make more
 than 600,000 requests to GitHub.
 
-GitHub's current rate limit is 5,000 per hour, thus if we are indexing with one
-token: `600,000/5,000 = 120` hours of work.
+GitHub's current rate limit is 5,000 requests per hour, thus if we are indexing
+with one token: `600,000/5,000 = 120` hours of work.
 
 Good news, this indexer can be interrupted, and resumed at any time.
 
