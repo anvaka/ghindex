@@ -1,6 +1,9 @@
 # ghindex
 
-Creates github index for similar repositories discovery. WIP
+Creates github index for similar repositories discovery. You can see working
+website here: [Gazing Stargazers](http://www.yasiv.com/github/)
+
+WIP.
 
 # Usage
 
