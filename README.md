@@ -1,7 +1,7 @@
 # ghindex
 
 Creates GitHub index for similar repositories discovery. You can see working
-website here: [Gazing Stargazers](http://www.yasiv.com/github/)
+website here: [Gazing Stargazers](http://www.yasiv.com/github/) (Last time indexed on Jun 9 - Jun 13, 2014). 
 
 # Usage
 
