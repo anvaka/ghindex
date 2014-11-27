@@ -22,6 +22,9 @@ variable:
 ENABLE_LOG=1 node repoIndexer.js --tokens=...
 ```
 
+Note: `COMMA_SEPARATED_LIST_OF_GITHUB_TOKENS` - can be just a single token, which you can create in [Personal access tokens](https://github.com/settings/applications) page.
+
+
 ## 2. Gathering followers for repositories
 
 Second step to building index of recommendations is to gather followers of popular
