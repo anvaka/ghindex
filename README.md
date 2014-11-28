@@ -99,6 +99,25 @@ to reach out to me: Open PR/[tweet](https://twitter.com/anvaka) to me/[email](ma
 
 PS: If you are working for GitHub, can you please make this feature part of GitHub?
 
+# Alternative ways to source data?
+
+It looks like [Google's BigQuery](https://bigquery.cloud.google.com) is a good candidate 
+for faster sourcing. E.g. this command:
+
+``` sql
+SELECT repository_url, actor_attributes_login
+FROM [githubarchive:github.timeline]
+WHERE type='WatchEvent' AND actor_attributes_login IN (
+  SELECT actor_attributes_login FROM [githubarchive:github.timeline] 
+  WHERE type='WatchEvent'
+  GROUP BY actor_attributes_login HAVING (count(*) > 1) AND (count (*) < 500)
+)
+GROUP EACH BY repository_url, actor_attributes_login;
+```
+
+will give a list of repositories along with user names who liked them. In theory 
+this should be enough to start building recommendation database.
+
 # license
 
 MIT
