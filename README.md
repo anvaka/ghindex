@@ -115,6 +115,41 @@ WHERE type='WatchEvent' AND actor_attributes_login IN (
 GROUP EACH BY repository_url, actor_attributes_login;
 ```
 
+## Why are we limiting lower bound to at least 2 stars?
+
+Since we are using  [Sorensen-Dice similarity coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient),
+users who gave only 1 star total, can be excluded from "shared stars" metric.
+In theory this will slightly skew similarity coefficient and make two projects more
+similar than they should be, but in practice results seem to be helpful enough. This
+also serves as a good filter against [bot attacks](https://github.com/Rohfosho/CosmosBrowserBackend/issues/13).
+
+## Why do we limit upper  bound to at most 500? 
+
+Computing similarity coefficient is very much CPU/Memory intensive. We limit to 500
+to make computation faster. In theory this should impact skew similarity coefficient
+towards user who gave less stars, but in pracrice, there seem to be ony 0.7% of users
+who gave more than 500 stars.
+
+The 0.7% is calculated from comparing number of results when executing
+
+``` sql
+SELECT actor_attributes_login, COUNT(actor_attributes_login) FROM [githubarchive:github.timeline] 
+WHERE type='WatchEvent'
+GROUP BY actor_attributes_login 
+HAVING (count(*) > 1) AND (COUNT(*) <= 500)
+```
+
+(~`787,000`) and
+
+``` sql
+SELECT actor_attributes_login, COUNT(actor_attributes_login) FROM [githubarchive:github.timeline] 
+WHERE type='WatchEvent'
+GROUP BY actor_attributes_login 
+HAVING (count(*) > 500)
+```
+
+`5,532`.
+
 To produce final file with repository descriptions we need to get all descriptions:
 
 ``` sql
