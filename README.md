@@ -115,6 +115,26 @@ WHERE type='WatchEvent' AND actor_attributes_login IN (
 GROUP EACH BY repository_url, actor_attributes_login;
 ```
 
+To produce final file with repository descriptions we need to get all descriptions:
+
+``` sql
+SELECT (repository_owner  + '/' + repository_name) as name, 
+       a.repository_description as description, 
+       a.repository_watchers as watchers
+FROM [githubarchive:github.timeline] a
+INNER JOIN EACH (
+  SELECT MAX(repository_pushed_at) as last_push_date, repository_url
+  FROM [githubarchive:github.timeline]
+  WHERE type="PushEvent" AND repository_watchers > 0
+  GROUP EACH BY repository_url
+  ) b ON a.repository_url = b.repository_url AND a.repository_pushed_at = b.last_push_date
+WHERE a.type='PushEvent' AND a.repository_watchers > 0
+GROUP BY name, watchers, description , a.repository_watchers 
+ORDER BY a.repository_watchers DESC
+```
+
+I'm also returning stars here, since this information is rendered on www.yasiv.com/github/
+
 will give a list of repositories along with user names who liked them. In theory 
 this should be enough to start building recommendation database.
 
