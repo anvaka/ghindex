@@ -1,6 +1,6 @@
 {
   "name": "ghindex",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Creates github index for similar repositories discovery",
   "main": "index.js",
   "scripts": {
@@ -16,13 +16,9 @@
     "url": "https://github.com/anvaka/ghindex"
   },
   "dependencies": {
-    "JSONStream": "^0.8.0",
     "bluebird": "^2.3.11",
     "csv-parse": "0.0.6",
     "hiredis": "^0.1.17",
-    "level": "^0.18.0",
-    "optimist": "^0.6.1",
-    "redis": "^0.12.1",
-    "request": "^2.34.0"
+    "redis": "^0.12.1"
   }
 }
