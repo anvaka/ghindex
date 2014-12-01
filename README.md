@@ -18,7 +18,9 @@ To turn this fact into a number, I'm using [Sorensen-Dice](https://en.wikipedia.
 similarity coefficient:
 
 ```
-similarity(A, B) = number_of_shared_stars(A, B)/(number_of_stars(A) + number_of_stars(B))
+                            number_of_shared_stars(A, B)
+similarity(A, B) = -----------------------------------------
+                    number_of_stars(A) + number_of_stars(B)
 ```
 
 "Developers who gave star to this repository, also gave star to ..." metric
@@ -71,7 +73,7 @@ WHERE type='WatchEvent' AND actor_attributes_login IN (
 GROUP EACH BY repository_url, actor_attributes_login;
 ```
 
-## Why are we limiting lower bound to at least 2 stars?
+## Why do we limit lower bound to at least 2 stars?
 
 Since we are using  [Sorensen-Dice similarity coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient),
 users who gave only 1 star total, can be excluded from "shared stars" metric.
