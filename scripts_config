@@ -1,15 +1,30 @@
 #!/bin/bash
-# Your project id in google cloud:
-PROJECT_ID=yasivcom
+# ================= REQUIRED CONFIGURATION =================
+# Name of your dataset name in google query
+DATASET_NAME=yasivcom:github_watch
+# Name of your google storage bucket, where data is exported
+BUCKET_NAME=gs://gh_watch
 
+# ================= OPTIONAL CONFIGURATION ================
+# Your project id in google cloud (split on : from DATASET_NAME)
+PROJECT_ID=(${DATASET_NAME/:/ })
+
+## Information about watchers
 # Destination table where we save watch events
-WATCHERS_TABLE=yasivcom:github_watch.watch_events
-
-# Name of the bucket where file should be.
-WATCHERS_BUCKET="gs://gh_watch/watchers.csv.gz"
-
+WATCHERS_TABLE=$DATASET_NAME\.watch_events
+# Name of the file where watchers are exported
+WATCHERS_BUCKET="$BUCKET_NAME/watchers.csv.gz"
 # Name of the CSV file, which is saved to a bucket
 WATCHERS_FILE=`basename $WATCHERS_BUCKET`
-
 # After gunzip we should remove '.gz' extension:
 PLAIN_WATCHERS_FILE=${WATCHERS_FILE/%.gz/}
+
+## Information about projects description
+# Destination table where we save repository description
+DESCRIPTION_TABLE=$DATASET_NAME\.description
+# Name of the file where project description is exported
+DESCRIPTION_BUCKET="$BUCKET_NAME/description.csv.gz"
+# Name of the CSV file, which is saved to a bucket
+DESCRIPTION_FILE=`basename $DESCRIPTION_BUCKET`
+# After gunzip we should remove '.gz' extension:
+PLAIN_DESCRIPTION_FILE=${DESCRIPTION_FILE/%.gz/}
