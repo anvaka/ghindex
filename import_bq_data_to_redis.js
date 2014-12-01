@@ -2,7 +2,15 @@
  * This script imports CSV file produced by BigQuery into redis
  * WIP
  */
-var inputFile = require('fs').createReadStream('./no_gh_link_clean.csv'),
+
+var fileName = process.argv[2];
+var fs = require('fs');
+
+if (!fs.existsSync(fileName)) {
+  throw new Error('Cannot find input file with csv data: ' + fileName);
+}
+
+var inputFile = require('fs').createReadStream(fileName),
   redis = require("redis"),
   client = redis.createClient(),
   csv = require('csv-parse'),
