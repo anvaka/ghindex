@@ -6,4 +6,3 @@ find . -type f -name "*.json" -exec gzip -9 {} \;
 for f in **/*.json.gz; do
   mv $f "$(dirname "$f")/$(basename "$f" .json.gz).json"
 done
-cd ../projects && gzip -9 ./projects.json && mv ./projects.json.gz ./projects.json;
