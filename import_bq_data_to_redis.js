@@ -1,6 +1,10 @@
 /**
- * This script imports CSV file produced by BigQuery into redis
- * WIP
+ * This script imports CSV file with watchers information into redis
+ *
+ * Each line is stored as a set twice:
+ *
+ * repo:repository_name -> [list of star gazers]
+ * user:user_name -> [list of starred repositories]
  */
 
 var fileName = process.argv[2];
