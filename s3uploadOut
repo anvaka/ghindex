@@ -2,4 +2,4 @@
 # This script uploads all repositories into s3 bucket. It requires s3cmd to be
 # present in path
 s3cmd -r -rr -P --add-header=Content-Encoding:gzip --mime-type=application/json put ./out s3://github_yasiv
-s3cmd -r -rr -P --add-header=Content-Encoding:gzip --mime-type=application/json put ./projects  s3://github_yasiv
+s3cmd -r -rr -P --add-header=Content-Encoding:gzip --mime-type=application/json put ./out/projects.json s3://github_yasiv/projects/projects.json
