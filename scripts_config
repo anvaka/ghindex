@@ -3,13 +3,13 @@
 PROJECT_ID=yasivcom
 
 # Destination table where we save watch events
-DESTINATION_TABLE=yasivcom:github_watch.watch_events
+WATCHERS_TABLE=yasivcom:github_watch.watch_events
+
+# Name of the bucket where file should be.
+WATCHERS_BUCKET="gs://gh_watch/watchers.csv.gz"
 
 # Name of the CSV file, which is saved to a bucket
-WATCHERS_FILE=watchers.csv.gz
+WATCHERS_FILE=`basename $WATCHERS_BUCKET`
 
 # After gunzip we should remove '.gz' extension:
 PLAIN_WATCHERS_FILE=${WATCHERS_FILE/%.gz/}
-
-# Name of the bucket where file should be
-DESTINATION_BUCKET="gs://gh_watch/$WATCHERS_FILE"

@@ -4,7 +4,7 @@
 
 source ./scripts_config
 
-echo "Exporting data from $DESTINATION_TABLE into $DESTINATION_BUCKET"
+echo "Exporting data from $WATCHERS_TABLE into $WATCHERS_BUCKET"
 
 bq --project_id $PROJECT_ID \
-  extract --compression=GZIP $DESTINATION_TABLE $DESTINATION_BUCKET
+  extract --compression=GZIP $WATCHERS_TABLE $WATCHERS_BUCKET

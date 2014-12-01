@@ -3,12 +3,13 @@
 # You will need to replace project id and destination table with your own:
 source ./scripts_config
 
-echo "Gathering watchers. Data will be saved to $DESTINATION_TABLE"
+echo "Gathering watchers. Data will be saved to $WATCHERS_TABLE"
 
+# This should yield approximately 16M+ records
 bq --project_id $PROJECT_ID \
   query --batch \
   --allow_large_results \
-  --destination_table $DESTINATION_TABLE \
+  --destination_table $WATCHERS_TABLE \
   --replace \
 "SELECT repository_url, actor_attributes_login
   FROM [githubarchive:github.timeline]
