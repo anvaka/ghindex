@@ -1,0 +1,12 @@
+#!/bin/bash
+# Your project id in google cloud:
+PROJECT_ID=yasivcom
+
+# Destination table where we save watch events
+DESTINATION_TABLE=yasivcom:github_watch.watch_events
+
+# Name of the CSV file, which is saved to a bucket
+WATCHERS_FILE=watchers.csv.gz
+
+# Name of the bucket where file should be
+DESTINATION_BUCKET="gs://gh_watch/$WATCHERS_FILE"

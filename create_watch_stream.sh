@@ -1,15 +1,14 @@
 #!/bin/bash
 # This script will create stream of repository_url -> watcher events
 # You will need to replace project id and destination table with your own:
-PROJECT_ID=yasivcom
-DESTINATION=yasivcom:github_watch.watch_events
+source ./scripts_config
 
-echo "Gathering watchers. Data will be saved to $DESTINATION"
+echo "Gathering watchers. Data will be saved to $DESTINATION_TABLE"
 
 bq --project_id $PROJECT_ID \
   query --batch \
   --allow_large_results \
-  --destination_table $DESTINATION \
+  --destination_table $DESTINATION_TABLE \
   --replace \
 "SELECT repository_url, actor_attributes_login
   FROM [githubarchive:github.timeline]
