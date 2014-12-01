@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "JSONStream": "^0.8.0",
-    "bluebird": "^1.2.4",
+    "bluebird": "^2.3.11",
     "csv-parse": "0.0.6",
     "hiredis": "^0.1.17",
     "level": "^0.18.0",
