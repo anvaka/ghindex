@@ -68,7 +68,7 @@ function runRecommender(projectCache) {
       var user = pair[0];
       var repo = pair[1];
       var targetPath = path.join(OUTPUT_ROOT, user);
-      var targetFile = path.join(targetPath, repo + '.json');
+      var targetFile = path.join(targetPath, repo + '.json').toLowerCase();
 
       if (!fs.existsSync(targetPath)) {
         fs.mkdirSync(targetPath);
