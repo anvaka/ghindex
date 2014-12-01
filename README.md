@@ -3,7 +3,7 @@
 Creates GitHub index for similar repositories discovery. You can see working
 website here: [Gazing Stargazers](http://www.yasiv.com/github/) (Last time indexed on Jun 9 - Jun 13, 2014). 
 
-# Usage
+# Usage - Old approach
 
 ## 1. Gatehring popular repositories
 
@@ -99,7 +99,7 @@ to reach out to me: Open PR/[tweet](https://twitter.com/anvaka) to me/[email](ma
 
 PS: If you are working for GitHub, can you please make this feature part of GitHub?
 
-# Alternative ways to source data?
+# Alternative ways to source data? (New approach)
 
 It looks like [Google's BigQuery](https://bigquery.cloud.google.com) is a good candidate 
 for faster sourcing. E.g. this command:
