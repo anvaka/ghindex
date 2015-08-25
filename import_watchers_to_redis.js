@@ -28,8 +28,9 @@ inputFile.pipe(parser);
 
 function saveLine() {
   var line = parser.read();
-  var repo = line[0];
-  var login = line[1];
+  if (!line) return;
+  var login = line[0];
+  var repo = line[1];
 
   // we want to fix twitter. Normally we should not care about it
   // but in this it has to be changed, since it is so popular
