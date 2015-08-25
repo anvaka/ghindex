@@ -11,13 +11,11 @@ bq --project_id $PROJECT_ID \
   --allow_large_results \
   --destination_table $WATCHERS_TABLE \
   --replace \
-"SELECT repository_url, actor_attributes_login
-  FROM [githubarchive:github.timeline]
-  WHERE type='WatchEvent' AND actor_attributes_login IN (
-    SELECT actor_attributes_login FROM [githubarchive:github.timeline]
-    WHERE type='WatchEvent'
-    GROUP BY actor_attributes_login
-    HAVING (count(*) > 1) AND (count (*) < 500)
-  )
-  GROUP EACH BY repository_url, actor_attributes_login"
+"SELECT actor.login, repo.name
+ FROM
+ (TABLE_DATE_RANGE([githubarchive:day.events_],
+    TIMESTAMP('2015-01-01'),
+    TIMESTAMP('2015-08-22')
+  ))
+Where type = 'WatchEvent'"
 
