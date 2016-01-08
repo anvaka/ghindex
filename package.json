@@ -18,7 +18,7 @@
   "dependencies": {
     "bluebird": "^2.3.11",
     "csv-parse": "0.0.6",
-    "hiredis": "^0.1.17",
+    "hiredis": "^0.4.1",
     "redis": "^0.12.1"
   }
 }

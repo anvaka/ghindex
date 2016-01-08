@@ -5,7 +5,7 @@ source ./scripts_config
 
 echo "Gathering watchers. Data will be saved to $WATCHERS_TABLE"
 
-# This should yield approximately 16M+ records
+# This should yield approximately 19M+ records
 bq --project_id $PROJECT_ID \
   query --batch \
   --allow_large_results \
@@ -15,7 +15,7 @@ bq --project_id $PROJECT_ID \
  FROM
  (TABLE_DATE_RANGE([githubarchive:day.events_],
     TIMESTAMP('2015-01-01'),
-    TIMESTAMP('2015-08-22')
+    TIMESTAMP('2016-01-04')
   ))
 Where type = 'WatchEvent'"
 
