@@ -1,3 +1,7 @@
+/**
+ * This script will run ot of memory very quickly. If you run it
+ * make sure to use --max-old-heap-size=8192
+ */
 var fileName = process.argv[2] || './watchers.csv';
 var recommend = require('./lib/recommend.js');
 var save = require('./lib/save.js');
