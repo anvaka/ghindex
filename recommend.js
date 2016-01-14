@@ -19,11 +19,11 @@ var OUTPUT_ROOT = 'out';
 // results are usually very poor in that case
 var MIN_STARS = 150;
 
-var redis = require("redis"),
-  path = require('path'),
-  fs = require('fs'),
-  Promise = require("bluebird");
-  client = redis.createClient();
+var redis = require('redis');
+var path = require('path');
+var fs = require('fs');
+var Promise = require('bluebird');
+var client = redis.createClient();
 
 Promise.promisifyAll(client);
 ensureFolderStructure();
@@ -102,7 +102,7 @@ function cacheProjectInfo() {
   }).then(returnProjects);
 
   function byValidName(repo) {
-    var parts = repo.substr(5).split('/');
+    var parts = repo.substr(5).split('/');  // remove first five letters "repo:"
     return parts[0] && parts[1];
   }
 
@@ -112,7 +112,7 @@ function cacheProjectInfo() {
     function saveStars(watchers) {
       totalCached += 1;
       var name = key.substr(5); // remove first five letters "repo:"
-      project[name] = new ProejctInfo(watchers);
+      project[name] = new ProjectInfo(watchers);
       if (totalCached % 50000 === 0) {
         console.log('Cached information about', totalCached, 'projects');
       }
@@ -130,7 +130,7 @@ function findSimilarTo(projectName, projectCache) {
   return client.smembersAsync('repo:' + projectName)
     .then(buildRecommendations);
 
-  function buildRecommendations(stargazers, done) {
+  function buildRecommendations(stargazers) {
     var ourStars = stargazers.length;
     var sharedStars = Object.create(null);
 
@@ -219,7 +219,7 @@ function SimilarityInfo(name, similarityIndex, actualWatchers, info) {
   this.watchers = info.watchers !== undefined ? info.watchers : actualWatchers;
 }
 
-function ProejctInfo(watchers, description) {
+function ProjectInfo(watchers, description) {
   this.watchers = watchers;
   this.description = description;
 }
