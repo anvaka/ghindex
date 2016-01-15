@@ -115,6 +115,15 @@ range, and disk utilization is only 700MB.
 
 # Building recommendations
 
+**EDIT (Jan 2016):**
+At the moment GitHub Archive has changed it's API. Unfortunately repository
+description and actual number of stars are no longer available.
+
+I'm building offline indexer to crawl this information independently, but doing
+this very slowly
+** end of edit **
+
+
 Recommendation database is created by these [~200 lines of code](https://github.com/anvaka/ghindex/blob/master/recommend.js).
 There is a lot of asynchronous code in there, hidden behind promises.
 
