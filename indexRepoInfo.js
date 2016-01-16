@@ -15,13 +15,14 @@ getUnindexedRepositories()
   .then(crawlNextChunk);
 
 function crawlNextChunk(projects) {
+  console.log((new Date().toString()) + ' remaining to index: '  + projects.length);
   if (projects.length === 0) {
     console.log('All done. No more projects to index.');
     client.unref();
     return;
   }
 
-  processNext(projects, 10);
+  processNext(projects, 5);
 }
 
 function processNext(array, count) {
@@ -52,13 +53,30 @@ function saveRepositories(repositories) {
 }
 
 function getUnindexedRepositories() {
+  var totalIndexed = 0;
   return client.keysAsync('repo:*').then(function(keys) {
     return keys.map(toName);
+  })
+  .map(toNameIfNotExist, {concurrency: 3})
+  .filter(function(x) {
+    if (!x) totalIndexed += 1;
+    return x;
+  })
+  .then(function(repositories) {
+    console.log('Total indexed: ' + totalIndexed);
+    return repositories;
   });
 
   function toName(repo) {
     // remove 'repo:' prefix from the key:
     return repo.substr(5);
+  }
+
+  function toNameIfNotExist(repo) {
+    return client.existsAsync('rinfo:' + repo)
+      .then(function(exists) {
+        return exists ? '' : repo;
+      });
   }
 }
 
