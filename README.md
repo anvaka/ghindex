@@ -119,9 +119,14 @@ range, and disk utilization is only 700MB.
 At the moment GitHub Archive has changed it's API. Unfortunately repository
 description and actual number of stars are no longer available.
 
-I'm building offline indexer to crawl this information independently, but doing
-this very slowly
-** end of edit **
+Thus you will need to run
+1. Lunch redis server on default port
+2. Run `node indexRepoInfo.js` and let it run for 15-20 days (yeah :( )
+
+The indexRepoInfo will download one repository by one and save meta information
+about repositories (stargazers count, description). There are 1.7 million repositories
+and GitHub limits API calls to 5k per hour. Thus the number of days is huge.
+**end of edit**
 
 
 Recommendation database is created by these [~200 lines of code](https://github.com/anvaka/ghindex/blob/master/recommend.js).
@@ -139,20 +144,6 @@ In nutshell, this is what it's doing:
 
 Final results are saved to disk, and then uploaded to S3, so that the [frontend](http://www.yasiv.com/github/)
 can immediately get them.
-
-# Final Notes
-
-It takes ~2 hours 20 minutes to construct recommendations for 15K most popular
-GitHub projects. It also takes another 40 minutes to prepare/download data from
-BigQuery.
-
-My previous approach, where I had to manually index GitHub via GitHub's API,
-was taking approximately 5 days to build the index, and one more day to calculate
-recommendations.
-
-GitHub Archive is awesome; Redis is awesome too! Maybe next step will be improving
-results with content-based recommendation. E.g. we could index source code and
-find similarity based on AST. Anyway, please let me know what you think.
 
 # license
 
