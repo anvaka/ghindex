@@ -162,6 +162,7 @@ function findSimilarTo(projectName, projectCache) {
         .map(toSimilarityIndex)
         .sort(bySimilarityIndex)
         .splice(0, 101);
+
       return Promise.map(topSuggestions, toIndexWithDescription, {
         concurrency: 3
       });
@@ -175,13 +176,14 @@ function findSimilarTo(projectName, projectCache) {
       var project = projectCache[similarityInfo.name];
       if (project.description !== undefined) {
         // data was cached, but still not assigned to record
+        console.log('Has description! ' + project.description);
         similarityInfo.description = project.description;
         similarityInfo.watchers = project.watchers;
         return similarityInfo;
       }
 
       // let's go get this data from the database
-      return client.hgetallAsync('desc:' + similarityInfo.name)
+      return client.hgetallAsync('rinfo:' + similarityInfo.name)
         .then(function(dbInfo) {
           if (!dbInfo) {
             // project database does not have it.
@@ -189,8 +191,10 @@ function findSimilarTo(projectName, projectCache) {
             similarityInfo.description = '';
             return similarityInfo;
           }
+
           similarityInfo.description = dbInfo.description;
           similarityInfo.watchers = dbInfo.watchers;
+
           return similarityInfo;
         });
     }
@@ -199,15 +203,15 @@ function findSimilarTo(projectName, projectCache) {
       return y.index - x.index;
     }
 
-    function toSimilarityIndex(repo) {
-      var sharedStarsCount = sharedStars[repo];
-      var info = projectCache[repo];
+    function toSimilarityIndex(repoName) {
+      var sharedStarsCount = sharedStars[repoName];
+      var info = projectCache[repoName];
       if (!info) {
-        console.log('Something is wrong. Cannot find stars info about ' + repo);
+        console.log('Something is wrong. Cannot find stars info about ' + repoName);
       }
       // regular Sorensen-Dice similarity coefficient:
       var index = 2 * sharedStarsCount / (info.watchers + ourStars);
-      return new SimilarityInfo(repo, index, ourStars, info);
+      return new SimilarityInfo(repoName, index, ourStars, info);
     }
   }
 }
