@@ -126,7 +126,7 @@ Thus you will need to run
 The indexRepoInfo will download one repository by one and save meta information
 about repositories (stargazers count, description). There are 1.7 million repositories
 and GitHub limits API calls to 5k per hour. Thus the number of days is huge.
-** end of edit **
+**end of edit**
 
 
 Recommendation database is created by these [~200 lines of code](https://github.com/anvaka/ghindex/blob/master/recommend.js).
