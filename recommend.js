@@ -67,7 +67,7 @@ function runRecommender(projectCache) {
       var pair = projectName.split('/');
       var user = pair[0];
       var repo = pair[1];
-      var targetPath = path.join(OUTPUT_ROOT, user);
+      var targetPath = path.join(OUTPUT_ROOT, user).toLowerCase();
       var targetFile = path.join(targetPath, repo + '.json').toLowerCase();
 
       if (!fs.existsSync(targetPath)) {
@@ -218,7 +218,7 @@ function findSimilarTo(projectName, projectCache) {
 
 function SimilarityInfo(name, similarityIndex, actualWatchers, info) {
   this.name = name;
-  this.index = similarityIndex;
+  this.index = (Math.round(similarityIndex * 100)/100);
   this.description = info.description;
   this.watchers = info.watchers !== undefined ? info.watchers : actualWatchers;
 }
