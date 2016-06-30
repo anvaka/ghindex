@@ -13,7 +13,7 @@ bq --project_id $PROJECT_ID \
   --replace \
 "SELECT actor.login, repo.name
  FROM
- (TABLE_DATE_RANGE([githubarchive:day.events_],
+ (TABLE_DATE_RANGE([githubarchive:day.],
     TIMESTAMP('2015-01-01'),
     TIMESTAMP('2016-01-04')
   ))
